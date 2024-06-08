@@ -217,7 +217,7 @@ public:
 
 };
 
-//#define INHERTTANCE_CHECK
+#define INHERTTANCE_CHECK
 
 void main()
 {

@@ -1,88 +1,72 @@
 ﻿#include<iostream>
 #include<math.h>
 
+const double PI = 3.1415;
 
 class Figure
 {
-	int length, width; // длина, ширина (высота)
-	//int square, perimeter; // площадь, периметр
+	double length_AR; // длина стороны или (радиус)
+public:	
+	virtual double set_length_AR() { return length_AR; } const
+	virtual void get_length_AR(double length_AR) { this->length_AR = length_AR; }
 
-public:
-	//get/set
-	virtual int set_length() { return length; } const
-	virtual int set_width() { return width; } const
-
-	virtual void get_length(int length) { this->length = length; }
-	virtual void get_width(int width) { this->width = width; }
-
-	/*virtual int set_square() { return square; } const
-	virtual int set_perimeter() { return perimeter; } const
-
-	virtual void get_square(int square) { this->square = square; } 
-	virtual void get_perimeter(int perimeter) { this->perimeter = perimeter; }*/
-
-	// constructor;
-	Figure(int length, int width) 
+	// constructor
+	Figure(double length_AR)
 	{
-		get_length(length);
-		get_width(width);
-		std::cout << "Fconstructor:\t\t" << this << std::endl;
+		get_length_AR(length_AR);
+		std::cout << "F-constructor:\t\t" << this << std::endl;
 	}
-
 	virtual ~Figure() // destructor
 	{
-		std::cout << "Fdestructor\t\t" << this << std::endl;
+		std::cout << "F-destructor:\t\t" << this << std::endl;
 	}
 
-	//methods
+	// methods
+	virtual double sqare() = 0; // чисто виртуальная функция 
+	virtual double perimeter() = 0;
 	virtual void print()
 	{
-		std::cout << "length: " << set_length() << "\t" << "width: " << set_width() << std::endl;
-		SQARE();
-	}	
-
-	virtual void SQARE() {};
-	virtual void PERIMETER() {};
-
+		std::cout << "sqare: " << sqare(); std::cout << "\tperimeter: " << perimeter(); std::cout << std::endl;
+	}
 };
 
 class Square : public Figure
 {
+	double width; // ширина
+
 public:
+	//get/set
+	double set_width() { return width; } const
+	void get_width(double width) { this->width = width; }
 	
 	//constructor
-	Square(int length, int width) :Figure(length, width)
+	Square(double length_AR, double width = 0) :Figure(length_AR)
 	{
-		/*get_square(length * width);
-		get_perimeter((width + length) * 2);*/
-		SQARE();
-		PERIMETER();
-		std::cout << "Sconstructor\t\t" << this << std::endl;
+		get_width(width);
+		std::cout << "S-constructor\t\t" << this << std::endl;
 	}
-
 	~Square() // destructor
 	{
-		std::cout << "Sdestructor\t\t" << this << std::endl;
+		std::cout << "S-destructor\t\t" << this << std::endl;
 	}
 
 	// methods
 
-	void SQARE()
+	double sqare() // переопределение чисто виртуальной функции 
 	{
-		set_length() * set_width();
+		return set_length_AR() * set_width();
 	}
-
-	void PERIMETER()
+	double perimeter()
 	{
-		(set_length() + set_width()) * 2;
+		return (set_length_AR() + set_width()) * 2;
 	}
-
-
 
 	void print()
 	{
-		Figure::print();
-		for (int i = 0; i < set_length(); i++)
+		std::cout << "length: " << set_length_AR() << "\twidth: " << set_width() << std::endl;
+		Figure::print(); 
+
+		for (int i = 0; i < set_length_AR(); i++)
 		{
 			for (int j = 0; j < set_width(); j++)
 			{
@@ -93,36 +77,110 @@ public:
 	}
 };
 
-//class Triangle :public Figure
-//{
-//	int lengthRebro;
-//public:
-//	// set/get
-//
-//	int set_lengthRebro() { return lengthRebro; }
-//	void get_lengthRebro(int lengthRebro) { this->lengthRebro = lengthRebro; }
-//
-//	// constructors
-//
-//	Triangle(int length, int width) :Figure(length, width)
-//	{
-//		get_length(length);
-//		get_width(width);
-//
-//	}
-//
-//	// methods
-//
-//	
-//};
+class Triangle : public Figure
+{
+	double length_B, length_C; // length_R - длина стороны A, len_B - длина стороны B, len_C - длина стороны C
+public:
+	// set/get
+	double set_length_B() { return length_B; } const
+	double set_length_C() { return length_C; } const
+	void get_length_B(double length_B) { this->length_B = length_B; }
+	void get_length_C(double length_C) { this->length_C = length_C; }
+
+	// constructor
+	Triangle(double length_R, double length_B, int length_C) :Figure(length_R)
+	{
+		get_length_B(length_B);
+		get_length_C(length_C);
+		std::cout << "T-constructor:\t\t" << this << std::endl;
+	}
+	~Triangle() //destructor
+	{
+		std::cout << "T-destructor:\t\t" << this << std::endl;
+	}
+
+	// methods 
+	double sqare()
+	{
+		double p = perimeter() / 2;
+		return sqrt(p*(p - set_length_B()) * (p - set_length_C()) * (p - set_length_AR()));
+	}
+	double perimeter()
+	{
+		return set_length_AR() + set_length_B() + set_length_C();
+	}
+
+	void print()
+	{
+		std::cout << "storona A: " << set_length_AR() << "\tstorona B: " << set_length_B() << "\tstorona C: " << set_length_C() << std::endl;
+		Figure::print();
+
+		std::cout << "demo drawing: ";
+		for (int i = 0; i <= set_length_AR(); ++i)
+		{
+			for (int j = set_length_B(); j > i; --j) std::cout << "  ";
+			for (int j = 1; j < 2 * i; ++j) std::cout << "# ";
+			std::cout << std::endl;
+		}
+		
+	}
+};
+
+class Circle :public Figure
+{
+	
+public:
+
+	// constructor
+	Circle(double length_AR) :Figure(length_AR)
+	{
+		std::cout << "C-constructor:\t\t" << this << std::endl;
+	}
+	~Circle()
+	{
+		std::cout << "C-destructor:\t\t" << this << std::endl;
+	}
+
+	// methods
+
+	double sqare()
+	{
+		return PI * pow(set_length_AR(), 2);
+	}
+
+	double perimeter()
+	{
+		return 2 * PI * set_length_AR();
+	}
+
+	void print()
+	{
+		std::cout << "radius: " << set_length_AR() << std::endl;
+		Figure::print();
+	}
+
+};
+
 
 int main()
 {
-	Figure A(5,5);
-	A.print();
-
-	Square S(4, 4);
+	Square S(5, 5);
 	S.print();
 
+	Triangle T(5, 6, 7);
+	T.print();
+	
+	Circle C(8);
+	C.print();
 
 }
+
+
+/*for (int i = 1; i <= set_length_AR(); ++i)
+		{
+			for (int j = set_length_B(); j > i; --j)
+				std::cout << "  ";
+			for (int j = 1; j < 2 * set_length_C(); ++j)
+				std::cout << "# ";
+			std::cout << std::endl;
+		}*/
