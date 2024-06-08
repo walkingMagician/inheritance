@@ -1,7 +1,9 @@
 ﻿#include<iostream>
 #include<math.h>
+#include <random>
 
 const double PI = 3.1415;
+void printCircle(double value);
 
 class Figure
 {
@@ -118,7 +120,7 @@ public:
 		std::cout << "demo drawing: ";
 		for (int i = 0; i <= set_length_AR(); ++i)
 		{
-			for (int j = set_length_B(); j > i; --j) std::cout << "  ";
+			for (int j = (int)set_length_B(); j > i; --j) std::cout << "  ";
 			for (int j = 1; j < 2 * i; ++j) std::cout << "# ";
 			std::cout << std::endl;
 		}
@@ -127,8 +129,7 @@ public:
 };
 
 class Circle :public Figure
-{
-	
+{	
 public:
 
 	// constructor
@@ -157,24 +158,61 @@ public:
 	{
 		std::cout << "radius: " << set_length_AR() << std::endl;
 		Figure::print();
-	}
 
+		printCircle(set_length_AR());
+	}
 };
 
+void printCircle(double value) // функция рисунка круга 
+{
+	for (int i = (int)value; i >= -value; i-=2) // vertical 
+	{
+		for (int j = (int) - value; j <= value; j++) // gorizontal
+		{
+			if ((int)sqrt(pow(j, 2) + pow(i, 2)) == value) std::cout << "#"; // корень ...
+			else std::cout << " ";
+		}
+		std::cout << std::endl;
+	}
+}
+
+
+//#define ONE_CHECK
 
 int main()
 {
+#ifdef ONE_CHECK
 	Square S(5, 5);
 	S.print();
 
 	Triangle T(5, 6, 7);
 	T.print();
 	
-	Circle C(8);
+	Circle C(10);
 	C.print();
 
-}
+	std::cout << "-----------------";
+#endif
 
+	int n;
+	std::cout << "n = "; std::cin >> n;
+
+	Figure* group[] =
+	{
+		new Square(5, 5),
+		new Triangle(5, 6, 7),
+		new Circle(10),
+		new Square(4, 4),
+		new Triangle(3, 4, 5),
+		new Circle(8),
+		new Square(3, 5),
+		new Triangle(8, 10, 11),
+		new Circle(15)
+	};
+
+	group[n]->print();
+
+}
 
 /*for (int i = 1; i <= set_length_AR(); ++i)
 		{
