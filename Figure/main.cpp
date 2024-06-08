@@ -1,10 +1,12 @@
 ﻿#include<iostream>
+#include<math.h>
 
 
 class Figure
 {
-	int length, width; // длина, ширина
-	
+	int length, width; // длина, ширина (высота)
+	//int square, perimeter; // площадь, периметр
+
 public:
 	//get/set
 	virtual int set_length() { return length; } const
@@ -12,6 +14,12 @@ public:
 
 	virtual void get_length(int length) { this->length = length; }
 	virtual void get_width(int width) { this->width = width; }
+
+	/*virtual int set_square() { return square; } const
+	virtual int set_perimeter() { return perimeter; } const
+
+	virtual void get_square(int square) { this->square = square; } 
+	virtual void get_perimeter(int perimeter) { this->perimeter = perimeter; }*/
 
 	// constructor;
 	Figure(int length, int width) 
@@ -30,36 +38,25 @@ public:
 	virtual void print()
 	{
 		std::cout << "length: " << set_length() << "\t" << "width: " << set_width() << std::endl;
-		
-		for (int i = 0; i < set_length(); i++)
-		{
-			for (int j = 0; j < set_width(); j++)
-			{
-				std::cout << "# ";
-			}
-			std::cout << std::endl;
-		}
-
+		SQARE();
 	}	
+
+	virtual void SQARE() {};
+	virtual void PERIMETER() {};
+
 };
 
 class Square : public Figure
 {
-	int square, perimeter;
-
 public:
-	// get/set
-	int set_square() { return square; }
-	int set_perimeter() { return perimeter; }
-
-	void get_square(int square) { this->square = square; }
-	void get_perimeter(int perimeter) { this->perimeter = perimeter; }
-
+	
 	//constructor
 	Square(int length, int width) :Figure(length, width)
 	{
-		get_square(length * width);
-		get_perimeter((width + length) * 2);
+		/*get_square(length * width);
+		get_perimeter((width + length) * 2);*/
+		SQARE();
+		PERIMETER();
 		std::cout << "Sconstructor\t\t" << this << std::endl;
 	}
 
@@ -70,46 +67,54 @@ public:
 
 	// methods
 
-	void print()
+	void SQARE()
 	{
-		Figure::print();
-		std::cout << "square: " << set_square() << "\t" << "perimeter: " << set_perimeter() << std::endl;
-	}
-};
-
-class Rectangle : public Figure
-{
-	int square, perimeter;
-
-public:
-	// get/set
-	int set_square() { return square; }
-	int set_perimeter() { return perimeter; }
-
-	void get_square(int square) { this->square = square; }
-	void get_perimeter(int perimeter) { this->perimeter = perimeter; }
-
-	//constructor
-	Rectangle(int length, int width) :Figure(length, width)
-	{
-		get_square(length * width);
-		get_perimeter((width + length) * 2);
-		std::cout << "Rconstructor\t\t" << this << std::endl;
+		set_length() * set_width();
 	}
 
-	~Rectangle() // destructor
+	void PERIMETER()
 	{
-		std::cout << "Rdestructor\t\t" << this << std::endl;
+		(set_length() + set_width()) * 2;
 	}
 
-	// methods
+
 
 	void print()
 	{
 		Figure::print();
-		std::cout << "square: " << set_square() << "\t" << "perimeter: " << set_perimeter() << std::endl;
+		for (int i = 0; i < set_length(); i++)
+		{
+			for (int j = 0; j < set_width(); j++)
+			{
+				std::cout << "# ";
+			}
+			std::cout << std::endl;
+		}
 	}
 };
+
+//class Triangle :public Figure
+//{
+//	int lengthRebro;
+//public:
+//	// set/get
+//
+//	int set_lengthRebro() { return lengthRebro; }
+//	void get_lengthRebro(int lengthRebro) { this->lengthRebro = lengthRebro; }
+//
+//	// constructors
+//
+//	Triangle(int length, int width) :Figure(length, width)
+//	{
+//		get_length(length);
+//		get_width(width);
+//
+//	}
+//
+//	// methods
+//
+//	
+//};
 
 int main()
 {
@@ -119,7 +124,5 @@ int main()
 	Square S(4, 4);
 	S.print();
 
-	Rectangle R(4, 8);
-	R.print();
 
 }
