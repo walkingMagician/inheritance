@@ -34,17 +34,11 @@ public:
 
 class Square : public Figure
 {
-	double width; // ширина
+public: 
 
-public:
-	//get/set
-	double set_width() { return width; } const
-	void get_width(double width) { this->width = width; }
-	
 	//constructor
-	Square(double length_AR, double width = 0) :Figure(length_AR)
+	Square(double length_AR) :Figure(length_AR)
 	{
-		get_width(width);
 		std::cout << "S-constructor\t\t" << this << std::endl;
 	}
 	~Square() // destructor
@@ -56,21 +50,21 @@ public:
 
 	double sqare() // переопределение чисто виртуальной функции 
 	{
-		return set_length_AR() * set_width();
+		return set_length_AR() * set_length_AR();
 	}
 	double perimeter()
 	{
-		return (set_length_AR() + set_width()) * 2;
+		return (set_length_AR() + set_length_AR()) * 2;
 	}
 
 	void print()
 	{
-		std::cout << "length: " << set_length_AR() << "\twidth: " << set_width() << std::endl;
+		std::cout << "length: " << set_length_AR() << "\twidth: " << set_length_AR() << std::endl;
 		Figure::print(); 
 
 		for (int i = 0; i < set_length_AR(); i++)
 		{
-			for (int j = 0; j < set_width(); j++)
+			for (int j = 0; j < set_length_AR(); j++)
 			{
 				std::cout << "# ";
 			}
@@ -137,7 +131,7 @@ public:
 	{
 		std::cout << "C-constructor:\t\t" << this << std::endl;
 	}
-	~Circle()
+	~Circle() //destructor
 	{
 		std::cout << "C-destructor:\t\t" << this << std::endl;
 	}
@@ -160,6 +154,52 @@ public:
 		Figure::print();
 
 		printCircle(set_length_AR());
+	}
+};
+
+class Rectangle :public Figure
+{
+	double width;
+public:
+	// set/get
+	double set_width() { return width; } const
+	void get_width(double width) { this->width = width; }
+
+	// constructor
+	Rectangle(double length_AR, double width) :Figure(length_AR)
+	{
+		get_width(width);
+		std::cout << "R-constructor:\t\t" << this << std::endl;
+	}
+	~Rectangle() //destructor
+	{
+		std::cout << "R-destructor:\t\t" << this << std::endl;
+	}
+
+	// methods
+
+	double sqare()
+	{
+		return set_length_AR() * set_width();
+	}
+	double perimeter()
+	{
+		return (set_length_AR() + set_width()) * 2;
+	}
+
+	void print()
+	{
+		std::cout << "length: " << set_length_AR() << "\twidth: " << set_width() << std::endl;
+		Figure::print();
+
+		for (int i = 0; i < set_width(); i++)
+		{
+			for (int j = 0; j < set_length_AR(); j++)
+			{
+				std::cout << "# ";
+			}
+			std::cout << std::endl;
+		}
 	}
 };
 
@@ -194,18 +234,22 @@ int main()
 	std::cout << "-----------------";
 #endif
 
+
 	int n;
 	std::cout << "n = "; std::cin >> n;
 
 	Figure* group[] =
 	{
-		new Square(5, 5),
+		new Square(5),
 		new Triangle(5, 6, 7),
+		new Rectangle(15, 8),
 		new Circle(10),
-		new Square(4, 4),
+		new Square(4),
 		new Triangle(3, 4, 5),
+		new Rectangle(10, 9),
+		new Rectangle(19, 12),
 		new Circle(8),
-		new Square(3, 5),
+		new Square(3),
 		new Triangle(8, 10, 11),
 		new Circle(15)
 	};
