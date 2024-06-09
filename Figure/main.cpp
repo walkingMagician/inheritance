@@ -209,7 +209,7 @@ void printCircle(double value) // функция рисунка круга
 	{
 		for (int j = (int) - value; j <= value; j++) // gorizontal
 		{
-			if ((int)sqrt(pow(j, 2) + pow(i, 2)) == value) std::cout << "#"; // корень ...
+			if ((int)sqrt(pow(j, 2) + pow(i, 2)) == value) std::cout << "#";
 			else std::cout << " ";
 		}
 		std::cout << std::endl;
@@ -217,12 +217,12 @@ void printCircle(double value) // функция рисунка круга
 }
 
 
-//#define ONE_CHECK
+#define ONE_CHECK
 
 int main()
 {
 #ifdef ONE_CHECK
-	Square S(5, 5);
+	Square S(5);
 	S.print();
 
 	Triangle T(5, 6, 7);
